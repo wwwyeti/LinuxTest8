@@ -59,7 +59,7 @@ snake_init() {
     xscore=$Lines;      yscore=$((Cols/2));   #打印分数的位置
     xcent=$xline;       ycent=$yscore;        #中心点位置
     xrand=0;            yrand=0;              #随机点 
-    sumscore=0;         liveflag=1;           #总分和点存在标记
+    sumscore=0;         liveflag=10;           #总分和点存在标记
     sumnode=0;          foodscore=0;          #总共要加长的节点和点的分数
     
     snake="0000 ";                            #初始化贪吃蛇
@@ -141,7 +141,7 @@ mk_random_origin() {                               #产生随机点和随机数
 mk_random() {                               #产生随机点和随机数
     xrand=$((RANDOM%(Lines-3)+2));
     yrand=$((RANDOM%(Cols-2)+2));
-    foodscore=$((RANDOM%99+1));
+    foodscore=$((RANDOM%9+1));
 
     echo -ne "\033[$xrand;${yrand}H$foodscore";
     liveflag=0;
@@ -173,7 +173,7 @@ new_game() {                                #重新开始新游戏
         local x=${xpt[0]} y=${ypt[0]}
         (( ((x>=$((Lines-1)))) || ((x<=1)) || ((y>=Cols)) || ((y<=1)) )) && return 1; #撞墙
 
-        (( x==xrand && y==yrand )) && ((liveflag=1)) && ((sumnode+=foodscore)) && ((sumscore+=foodscore));
+        (( x==xrand && y==yrand )) && ((liveflag=1)) && ((sumnode+=foodscore)) && ((sumscore+=foodscore*10));
 
         echo -ne "\033[$xscore;$((yscore-2))H$sumscore";
     done
